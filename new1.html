@@ -107,6 +107,7 @@
             video.setAttribute('autoplay', '');
             video.setAttribute('muted', '');
             video.setAttribute('playsinline', '');
+            video.setAttribute('height', '100%');
             document.body.appendChild(video);
 
             navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
