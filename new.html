@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Models Viewer with Scrollable Buttons</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #model-container {
+            width: 100%;
+            height: 80vh;
+        }
+
+        .buttons-container {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            width: 60px;
+            height: 60px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .button:focus {
+            outline: none;
+        }
+
+        .button span {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="model-container"></div>
+    <div class="buttons-container">
+        <button class="button" onclick="loadModel('25_6_2024.glb')">1</button>
+        <button class="button" onclick="loadModel('f0d3242e-15d6-4009-9fac-46ee250d08ec_Sizzling Vihelmo (1).glb')">2</button>
+        <button class="button" onclick="loadModel('25_6_2024.glb')">3</button>
+        <button class="button" onclick="loadModel('f0d3242e-15d6-4009-9fac-46ee250d08ec_Sizzling Vihelmo (1).glb')">4</button>
+        <button class="button" onclick="loadModel('model5.glb')">5</button>
+        <button class="button" onclick="loadModel('model6.glb')">6</button>
+        <button class="button" onclick="loadModel('model7.glb')">7</button>
+        <button class="button" onclick="loadModel('model8.glb')">8</button>
+        <button class="button" onclick="loadModel('model9.glb')">9</button>
+        <button class="button" onclick="loadModel('model10.glb')">10</button>
+        <button class="button" onclick="loadModel('model11.glb')">11</button>
+        <button class="button" onclick="loadModel('model12.glb')">12</button>
+        <button class="button" onclick="loadModel('model13.glb')">13</button>
+        <button class="button" onclick="loadModel('model14.glb')">14</button>
+        <button class="button" onclick="loadModel('model15.glb')">15</button>
+        <button class="button" onclick="loadModel('model16.glb')">16</button>
+        <button class="button" onclick="loadModel('model17.glb')">17</button>
+        <button class="button" onclick="loadModel('model18.glb')">18</button>
+        <button class="button" onclick="loadModel('model19.glb')">19</button>
+        <button class="button" onclick="loadModel('model20.glb')">20</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+        let scene, camera, renderer, model;
+
+        function init() {
+            // Scene setup
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('model-container').appendChild(renderer.domElement);
+
+            // Lighting
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(2, 2, 5).normalize();
+            scene.add(light);
+
+            camera.position.z = 5;
+
+            // Initial model load
+            loadModel('model1.glb');
+        }
+
+        function loadModel(modelPath) {
+            if (model) {
+                scene.remove(model);
+            }
+
+            const loader = new THREE.GLTFLoader();
+            loader.load(modelPath, (gltf) => {
+                model = gltf.scene;
+                scene.add(model);
+                render();
+            });
+        }
+
+        function render() {
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+    </script>
+</body>
+</html>
